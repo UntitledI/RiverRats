@@ -23,10 +23,12 @@ router.get('/register', (req, res) => {
 router.post('/register', async (req, res) => {
     try{
         const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const randomID = Math.random();
+
 
         let user = {
-            id : req.body.id,
+            id : randomID,
             username : req.body.username,
             password : hashedPassword,
             email : req.body.email

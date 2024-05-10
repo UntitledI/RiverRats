@@ -18,7 +18,8 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "sql": "^0.78.0",
-    "sql.js": "^1.10.3"
+    "sql.js": "^1.10.3",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
