@@ -1,13 +1,11 @@
-const config = {
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    server: process.env.DATABASE_HOST,
-    database: process.env.DATABASE,
-    options:{
-      port : parseInt(process.env.DATABASE_PORT, 10),
-      trustServerCertificate: true,
-    }
-  
-  }
+const pg = require ('pg');
 
-  module.exports = config;
+const pool = new pg.Pool ({
+  user : process.env.DATABASE_USER,
+  password : process.env.DATABASE_PASSWORD,
+  host : process.env.DATABASE_HOST,
+  port : process.env.DATABASE_PORT,
+  database : process.env.DATABASE
+});
+
+  module.exports = pool;

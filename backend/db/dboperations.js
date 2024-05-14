@@ -1,42 +1,25 @@
-var config = require('./dbconfig');
-const sql = require('mssql');
+const pool = require('./dbconfig');
+const bcrypt = require('bcrypt');
 
-
-
-async function getUsers() {
-    try{
-        let pool = await sql.connect(config);
-        let users = await pool.query("SELECT * FROM users");
-        console.log(users);
-        return users.recordsets;
-    }
-    catch (error) {
-        console.log(error);
-    }
-
+async function userExists(email) {
+    const user = await pool.query("SELECT * FROM users WHERE email = $1",
+        [email]);
+        return user;
 }
 
-async function addUser(user) {
 
-    try{
-        let pool = await sql.connect(config);
-        let insertUser = await pool.request()
-        .input('id', sql.Int, user.id)
-        .input('username', sql.NVarChar, user.username)
-        .input('email', sql.NVarChar, user.email)
-        .input('password', sql.NVarChar, user.password )
-        .input('first_name', sql.NVarChar, user.first_name)
-        .input('salt', sql.Int, user.salt)
-        .input('profile_image', sql.NVarChar, user.profile_image)
-        .execute('InsertUser');
-    return insertUser.recordsets;
-    }
-    catch (err) {
-        console.log(err);
-    }
+async function addUser(username, email, password) {
+    const user = await pool.query("INSERT INTO users (username,email, password) VALUES ($1, $2, $3) RETURNING *", 
+        [username, email, password]);
+        return user;
+}
+
+async function authenticateUser(email, password) { 
+    
 }
 
 module.exports ={
-    getUsers :getUsers ,
-    addUser : addUser
+    userExists : userExists,
+    addUser : addUser,
+    authenticateUser : authenticateUser
 }
