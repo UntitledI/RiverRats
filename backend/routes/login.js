@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt');
 const User = require('../db/users')
 const dboperations = require('../db/dboperations');
 const jwtGenerator = require('../Utils/jwtGen');
+const {validLogin, validRegister} = require('../Utils/validInput');
+
+router.get('/', (req, res) => {
+    res.render('home.ejs')
+}) 
 
 
 router.get('/login', (req, res) => {
@@ -12,6 +17,9 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
     try{
+        const {error} = validLogin(req.body);
+        if(error) return res.status(400).json({message: error.details[0].message});
+
         const user = await dboperations.userExists(req.body.email);
 
         if(user.rows.length === 0) {
