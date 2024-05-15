@@ -4,23 +4,21 @@ const bcrypt = require('bcrypt');
 const User = require('../db/users')
 const dboperations = require('../db/dboperations');
 const jwtGenerator = require('../Utils/jwtGen');
-const {validLogin, validRegister} = require('../Utils/validInput');
+const validator = require('../middleware/inputValidator');
+const authenticate = require('../middleware/jwtAuth');
 
 router.get('/', (req, res) => {
-    res.render('home.ejs')
+    res.render('welcome.ejs');
 }) 
 
 
-router.get('/login', (req, res) => {
+router.get('/login', (req, res, next) => {
     res.render('login.ejs');
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', validator('login'), async (req, res) => {
     try{
-        const {error} = validLogin(req.body);
-        if(error) return res.status(400).json({message: error.details[0].message});
-
-        const user = await dboperations.userExists(req.body.email);
+        const user = await dboperations.userEmailExists(req.body.email);
 
         if(user.rows.length === 0) {
             return res.status(401).json("Email/Password is incorrect");
@@ -48,12 +46,16 @@ router.get('/register', (req, res) => {
     res.render('register.ejs');
 })
 
-router.post('/register', async (req, res) => {
-
+router.post('/register', validator('register'), async (req, res) => {
     try{
-        const users = await dboperations.userExists(req.body.email);
-        if(users.rows.length !== 0){
-            return res.status(401).send("User already exists")
+        const user_email = await dboperations.userEmailExists(req.body.email);
+        if(user_email.rows.length !== 0){
+            return res.status(401).send("Email already in use!")
+        }
+
+        const user_name = await dboperations.userNameExists(req.body.username);
+        if(user_name.rows.length !== 0){
+            return res.status(401).send("Username taken!")
         }
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -68,6 +70,16 @@ router.post('/register', async (req, res) => {
         console.error(err.message);
         res.status(500).send("Server Error");
     }
+})
+
+router.get('/verified', authenticate,  async (req, res) => {
+    try{
+        res.json(true);
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+    
 })
 
 

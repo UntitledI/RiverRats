@@ -1,4 +1,4 @@
-GET http://localhost:3000/userList
+GET http://localhost:3000/home
 
 ###
 
@@ -6,8 +6,8 @@ POST http://localhost:3000/register
 Content-Type: application/json 
 
 {
-    "username": "dim123411111",
-    "email": "test511111@email.com",
+    "username": "ewq1",
+    "email": "test511@mail.com",
     "password": "password12341"
 }
 
@@ -20,3 +20,5 @@ Content-Type: application/json
     "email": "test511111@email.com",
     "password": "password12341"
 }
+
+###
