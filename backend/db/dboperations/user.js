@@ -1,5 +1,4 @@
-const pool = require('./dbconfig');
-const bcrypt = require('bcrypt');
+const pool = require('../dbconfig');
 
 async function userEmailExists(email) {
     const user = await pool.query("SELECT * FROM users WHERE email = $1",
@@ -21,7 +20,7 @@ async function addUser(username, email, password) {
 }
 
 async function findUser(id) { 
-    const user = await pool.query("SELECT username FROM users WHERE id = $1",
+    const user = await pool.query("SELECT id, username FROM users WHERE id = $1",
     [id]);
     return user;
     
