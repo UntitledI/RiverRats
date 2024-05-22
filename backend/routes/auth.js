@@ -2,7 +2,7 @@ const express = require ('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../db/users')
-const dboperations = require('../db/dboperations');
+const dboperations = require('../db/dboperations/user');
 const jwtGenerator = require('../Utils/jwtGen');
 const validator = require('../middleware/inputValidator');
 const authenticate = require('../middleware/jwtAuth');
@@ -30,10 +30,22 @@ router.post('/login', validator('login'), async (req, res) => {
             return res.status(401).json("Email/Password is incorrect");
         }
 
-        const token = jwtGenerator(user.rows[0].userid);
+        const token = jwtGenerator(user.rows[0].id, res);
 
         res.json({token});
  
+    }
+    catch(err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+
+})
+
+router.get('/logout', authenticate, async (req, res) => {
+    try{
+        res.cookie("jwt", "", {maxAge:0});
+        res.status(200).json({message: "logged out"});
     }
     catch(err) {
         console.error(err.message);
@@ -62,7 +74,7 @@ router.post('/register', validator('register'), async (req, res) => {
 
         const newUser = await dboperations.addUser(req.body.username, req.body.email, hashedPassword);
 
-        const token = jwtGenerator(newUser.rows[0].userid);
+        const token = jwtGenerator(newUser.rows[0].id, res);
 
         res.json({token});  
     }
@@ -72,14 +84,14 @@ router.post('/register', validator('register'), async (req, res) => {
     }
 })
 
-router.get('/verified', authenticate,  async (req, res) => {
-    try{
-        res.json(true);
-    } catch(err) {
-        console.error(err.message);
-        res.status(500).send("Server Error");
-    }
-    
+router.get("/home", authenticate, async (req, res) => {
+    // try{
+    //     res.json(req.user.rows[0].username);
+    // } catch(err) {
+    //     console.error(err.message);
+    //     res.status(500).send("Server Error");
+    // }
+    res.render("home.ejs");
 })
 
 

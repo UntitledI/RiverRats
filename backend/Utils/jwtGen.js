@@ -1,12 +1,18 @@
 const jwt = require('jsonwebtoken');
 
 
-function jwtGenerator(userid) {
+function jwtGenerator(userid, res) {
     const payload = {
-        userid: userid
+        userid : userid
     }
-
-    return jwt.sign(payload, process.env.JWTSECRET, {expiresIn: "12hr"})
+    const token = jwt.sign(payload, process.env.JWTSECRET, {
+        expiresIn: "12hr"});
+    res.cookie("jwt", token, {
+        maxAge: 15*24*60*60*1000,
+        httpOnly: true,
+        sameSite: "strict"
+    });
 }
+
 
 module.exports = jwtGenerator;
