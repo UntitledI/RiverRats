@@ -7,7 +7,8 @@ function useCreateLobby() {
 
 
     const createLobby = async ({name, password}) => {
-        console.log(name, password)
+        const success = handleInputErrors(name);
+        if(!success) return false;
         setLoading(true);
         try {
             const res = await fetch("http://localhost:3000/lobby", {
@@ -19,9 +20,12 @@ function useCreateLobby() {
             if(data.error) {
                 throw new Error(data.error)
             }
+            toast.success("lobbycreated successfully!")
+            return true;
             
         } catch (error) {
             toast.error(error.message);
+            return false;
             
         } finally{
             setLoading(false);
@@ -33,3 +37,12 @@ function useCreateLobby() {
 }
 
 export default useCreateLobby
+
+function handleInputErrors(name) {
+	if (!name) {
+		toast.error("Please fill in name field!");
+		return false;
+	}
+
+	return true;
+}

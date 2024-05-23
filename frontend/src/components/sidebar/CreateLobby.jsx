@@ -10,8 +10,16 @@ function CreateLobby() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createLobby({name, password});
-}
+
+    const isSuccess = await createLobby({ name, password });
+
+    if (isSuccess) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        window.location.reload();
+    } else {
+        console.error('Lobby creation failed.');
+    }
+};
 
 
   return (
@@ -19,7 +27,10 @@ function CreateLobby() {
         <button className="btn btn-wide text-gray-200" onClick={()=>document.getElementById('my_modal_3').showModal()}>Create Lobby</button>
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box">
-            <form onSubmit={handleSubmit} method="dialog">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          </form>
+            <form onSubmit={handleSubmit}>
               <h1 className='text-xl font-medium text-center text-gray-300'> Create
                 <span className='text-2xl text-green-200'>Lobby</span>
             </h1>

@@ -7,10 +7,6 @@ const Lobby = () => {
         <LobbyMember/>
         <LobbyMember/>
         <LobbyMember/>
-        <LobbyMember/>
-        <LobbyMember/>
-        <LobbyMember/>
-        <LobbyMember/>
     </div>
   )
 }
