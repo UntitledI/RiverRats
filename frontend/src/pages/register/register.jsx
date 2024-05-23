@@ -5,7 +5,7 @@ function register() {
     <div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
         <div className='h-full w-full bg-white-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-80 border border-gray-100'>
             <h1 className='text-xl font-medium text-center text-gray-300'> Register
-                <span className='text-2xl text-green-200'>Hold 'em</span>
+                <span className='text-2xl text-green-200'>River Rat</span>
             </h1>
 
             <form>

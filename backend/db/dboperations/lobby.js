@@ -1,6 +1,5 @@
 const pool = require('../dbconfig');
 
-
 async function createPrivateLobby(hostId, name, password, capacity) {
     const lobby = await pool.query("INSERT INTO lobby (hostid, name, password, capacity) VALUES ($1, $2, $3, $4) RETURNING *", 
     [hostId, name, password, capacity]);
@@ -23,13 +22,11 @@ async function getLobbyMembers(lobbyid) {
     const users = await pool.query("SELECT userid FROM lobby_member WHERE lobbyid = $1",
     [lobbyid]);
     return users;
-
 }
 
 async function getOpenLobbies() {
     const lobbies = await pool.query("SELECT name, capacity, lobby_id FROM lobby WHERE lobby_open");
     return lobbies;
-
 }
 
 async function setLobbyStatus(lobbyid, lobbyStatus) {
@@ -37,7 +34,6 @@ async function setLobbyStatus(lobbyid, lobbyStatus) {
     [lobbyStatus, lobbyid]);
     return lobby; 
 }
-
 
 module.exports ={
     createPublicLobby : createPublicLobby,
