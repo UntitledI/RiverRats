@@ -1,16 +1,23 @@
+import useLobby from "../../zustand/useLobby";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { useEffect } from "react";
 
 
 function LobbyChatContainer() {
-    const noLobbySelected = false;
+    const {selectedLobby, setSelectedLobby} = useLobby();
+
+    useEffect(() => {
+        return() => setSelectedLobby(null)
+    }, [setSelectedLobby]);
+
   return (
     <div className=" md:min-w-[450px] flex flex-col">
-        {noLobbySelected ? <NoLobbySelected/> : (
+        {!selectedLobby ? <NoLobbySelected/> : (
             <>
                 <div className="bg-green-950 px-4 py-2 mb-2 flex items-center justify-center">
-                    <span className="text-gray-200 font-semibold">CHAT: </span> <span className="text-gray-500 font-bold">LOBBY</span>
+                    <span className="text-gray-200 font-semibold">CHAT: </span> <span className="text-gray-500 font-bold">{selectedLobby.name}</span>
                 </div>
             
                 <Messages/>

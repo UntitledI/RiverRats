@@ -1,11 +1,12 @@
+import useLobby from "../../zustand/useLobby";
 import Lobby from "./Lobby";
 import StartGame from "./StartGame";
 
 function LobbyContainer() {
-    const noLobbySelected = false;
+    const {selectedLobby, setSelectedLobby} = useLobby();
   return (
     <div className="md:min-w-[450px] flex flex-col">
-        {noLobbySelected ? (
+        {!selectedLobby ? (
             <NoLobbySelected/>
         ) : (
             <>

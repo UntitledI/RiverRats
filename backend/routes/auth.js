@@ -5,7 +5,6 @@ const User = require('../db/users')
 const dboperations = require('../db/dboperations/user');
 const jwtGenerator = require('../Utils/jwtGen');
 const validator = require('../middleware/inputValidator');
-const authenticate = require('../middleware/jwtAuth');
 
 router.get('/', (req, res) => {
     res.render('welcome.ejs');
@@ -19,80 +18,78 @@ router.get('/login', (req, res) => {
 router.post('/login', validator('login'), async (req, res) => {
     try{
         const user = await dboperations.userEmailExists(req.body.email);
-
         if(user.rows.length === 0) {
-            return res.status(401).json("Email/Password is incorrect");
+            return res.status(401).json({error :"Email is incorrect"});
         }
 
         const validPassword = await bcrypt.compare(req.body.password, user.rows[0].password);
 
         if(!validPassword) {
-            return res.status(401).json("Email/Password is incorrect");
+            return res.status(401).json({error :"Password is incorrect"});
         }
 
-        const token = jwtGenerator(user.rows[0].id, res);
 
-        res.json({token});
+        jwtGenerator(user.rows[0].id, res);
+
+        res.status(201).json({
+            id: user.rows[0].id,
+            username: user.rows[0].username,
+            email: user.rows[0].email
+        });       
  
     }
     catch(err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({error:"Server Error"});
     }
 
 })
 
-router.get('/logout', authenticate, async (req, res) => {
+router.post('/logout', async (req, res) => {
     try{
         res.cookie("jwt", "", {maxAge:0});
         res.status(200).json({message: "logged out"});
     }
     catch(err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({error:"Server Error"});
     }
 
-})
-
-router.get('/register', (req, res) => {
-    res.render('register.ejs');
 })
 
 router.post('/register', validator('register'), async (req, res) => {
     try{
         const user_email = await dboperations.userEmailExists(req.body.email);
         if(user_email.rows.length !== 0){
-            return res.status(401).send("Email already in use!")
+            return res.status(401).json({error:"Email already in use!"})
         }
 
         const user_name = await dboperations.userNameExists(req.body.username);
         if(user_name.rows.length !== 0){
-            return res.status(401).send("Username taken!")
+            return res.status(401).json({error:"Username taken!"})
         }
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const newUser = await dboperations.addUser(req.body.username, req.body.email, hashedPassword);
 
-        const token = jwtGenerator(newUser.rows[0].id, res);
+        if(newUser) {
+            jwtGenerator(newUser.rows[0].id, res);
 
-        res.json({token});  
+            res.status(201).json({
+                id: newUser.rows[0].id,
+                username: newUser.rows[0].username,
+                email: newUser.rows[0].email
+            });       
+        } else {
+            res.status(400).json({error: "Invalid user data"})
+        }
+
     }
     catch(err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({errir:"Server Error"});
     }
 })
-
-router.get("/home", authenticate, async (req, res) => {
-    // try{
-    //     res.json(req.user.rows[0].username);
-    // } catch(err) {
-    //     console.error(err.message);
-    //     res.status(500).send("Server Error");
-    // }
-    res.render("home.ejs");
-})
-
 
 module.exports = router;
