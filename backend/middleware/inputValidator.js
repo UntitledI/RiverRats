@@ -17,8 +17,8 @@ module.exports = function(validator) {
             
         } catch(err) {
             if (err.isJoi)
-                return next(createHttpError(422, {message: err.message}))
-            next(createHttpError(500))
+                return res.status(422).json({error:err.message})
+            next()
         }
     }
 }

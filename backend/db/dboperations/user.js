@@ -26,6 +26,8 @@ async function findUser(id) {
     
 }
 
+
+
 module.exports ={
     userEmailExists : userEmailExists,
     userNameExists : userNameExists,
