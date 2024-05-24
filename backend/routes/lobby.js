@@ -33,5 +33,41 @@ router.post('/', async (req, res) => {
 
 })
 
+router.get('/join/:id', async (req, res) => {
+    try{
+        const {id: lobbyid} = req.params;
+        const lobbyMember = await dboperations.getLobbyMembers(lobbyid);
+        res.status(201).json({
+            userid: lobbyMember.rows[0].userid
+        }); 
+ 
+    }
+    catch(err) {
+        console.error(err.message);
+        res.status(500).json({error:"Server Error"});
+    }
+
+})
+
+router.post('/join', async (req, res) => {
+    try{
+        const userid  = req.body.userid;
+        const lobbyid = req.body.lobbyid;
+        const lobbyMember = await dboperations.updateLobby(userid, lobbyid);
+        res.status(201).json({
+            userid: lobbyMember.rows[0].userid,
+            lobby_id: lobbyMember.rows[0].lobbyid
+        }); 
+ 
+    }
+    catch(err) {
+        console.error(err.message);
+        res.status(500).json({error:"Server Error"});
+    }
+
+})
+
+
+
 
 module.exports = router;

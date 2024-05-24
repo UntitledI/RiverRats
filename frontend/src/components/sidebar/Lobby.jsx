@@ -6,9 +6,10 @@ function Lobby({lobby, lastidx}) {
 
     const isSelected = selectedLobby?.lobby_id === lobby.lobby_id
 
+
   return <>
     <div className={`flex gap-2 items-center hover:bg-green-950 rounded p-2 py-4 cursor-pointer
-        ${isSelected ? "bg-green-950" : ""}
+        ${isSelected ? "bg-green-950" : ""} 
     `}
         onClick={() => setSelectedLobby(lobby)}
     >

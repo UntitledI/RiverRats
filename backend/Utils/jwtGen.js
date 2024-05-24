@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-
 function jwtGenerator(userid, res) {
     const payload = {
         userid : userid
@@ -9,11 +8,9 @@ function jwtGenerator(userid, res) {
     const token = jwt.sign(payload, process.env.JWTSECRET, {
         expiresIn: "12hr"});
 
-
     res.cookie("jwt", token, {
         maxAge: 15*24*60*60*1000,
-        httpOnly: true,
-        sameSite: "strict"
+        httpOnly: true
     });
 }
 

@@ -1,26 +1,32 @@
 import useLobby from "../../zustand/useLobby";
 import Lobby from "./Lobby";
 import StartGame from "./StartGame";
+import JoinLobby from "./JoinLobby";
 
 function LobbyContainer() {
     const {selectedLobby, setSelectedLobby} = useLobby();
+    const {joinLobby, setJoinLobby} = useLobby();
+
   return (
     <div className="md:min-w-[450px] flex flex-col">
         {!selectedLobby ? (
             <NoLobbySelected/>
-        ) : (
+        ) :  selectedLobby && !joinLobby ? (
+            <JoinLobby/>
+
+        ) : selectedLobby && joinLobby ? (
             <>
-            {/* {Header} */}
             <div className="bg-green-950 px-4 py-2 mb-2 flex items-center justify-center">
                 <span className="text-gray-200 font-bold">LOBBY</span>
             </div>
-            <Lobby />
+            <Lobby/>
             <StartGame/>
         </>
-        )}
+        ) : null}
     </div>
   )
 }
+
 
 export default LobbyContainer
 
@@ -34,3 +40,4 @@ const NoLobbySelected = () => {
 		</div>
 	);
 };
+

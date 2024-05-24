@@ -73,7 +73,6 @@ router.post('/register', validator('register'), async (req, res) => {
 
         const newUser = await dboperations.addUser(req.body.username, req.body.email, hashedPassword);
 
-        if(newUser) {
             jwtGenerator(newUser.rows[0].id, res);
 
             res.status(201).json({
@@ -81,9 +80,7 @@ router.post('/register', validator('register'), async (req, res) => {
                 username: newUser.rows[0].username,
                 email: newUser.rows[0].email
             });       
-        } else {
-            res.status(400).json({error: "Invalid user data"})
-        }
+
 
     }
     catch(err) {

@@ -5,9 +5,10 @@ const Lobbies = () => {
 
     const {loading, lobbies} = useGetLobbies();
     const lobbyRows = lobbies?.rows || [];
-    console.log("LOBBIES: ", lobbyRows)
+
   return (
-    <div className='py-2 flex flex-col overflow-auto'>
+
+    <div className='py-2 flex flex-col overflow-auto' >
         {lobbyRows.map((lobby, idx) => (
             <Lobby
             key={lobby.lobby_id}

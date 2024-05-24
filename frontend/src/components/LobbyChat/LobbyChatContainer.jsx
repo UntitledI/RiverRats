@@ -7,14 +7,19 @@ import { useEffect } from "react";
 
 function LobbyChatContainer() {
     const {selectedLobby, setSelectedLobby} = useLobby();
+    const {joinLobby, setJoinLobby} = useLobby();
 
     useEffect(() => {
         return() => setSelectedLobby(null)
     }, [setSelectedLobby]);
 
+    useEffect(() => {
+        return() => setJoinLobby(null)
+    }, [setJoinLobby]);
+
   return (
     <div className=" md:min-w-[450px] flex flex-col">
-        {!selectedLobby ? <NoLobbySelected/> : (
+        {!selectedLobby || !joinLobby ? <NoLobbySelected/> : (
             <>
                 <div className="bg-green-950 px-4 py-2 mb-2 flex items-center justify-center">
                     <span className="text-gray-200 font-semibold">CHAT: </span> <span className="text-gray-500 font-bold">{selectedLobby.name}</span>

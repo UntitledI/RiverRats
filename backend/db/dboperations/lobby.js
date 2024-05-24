@@ -35,11 +35,18 @@ async function setLobbyStatus(lobbyid, lobbyStatus) {
     return lobby; 
 }
 
+async function updateLobby(userid, lobbyid) {
+    const user = await pool.query("INSERT INTO lobby_member (userid, lobbyid) VALUES ($1, $2) RETURNING *",
+        [userid, lobbyid]);
+        return user;
+}
+
 module.exports ={
     createPublicLobby : createPublicLobby,
     createPrivateLobby : createPrivateLobby, 
     addMember : addMember,
     getLobbyMembers : getLobbyMembers,
     getOpenLobbies : getOpenLobbies,
-    setLobbyStatus : setLobbyStatus
+    setLobbyStatus : setLobbyStatus,
+    updateLobby : updateLobby
 }
