@@ -19,9 +19,11 @@ Authentication: Bcrypt, JWT auth
 
 ## UI: 
 
-* User Login:  ![riverLogin](https://github.com/user-attachments/assets/0826413f-c30a-4234-82cb-22961528b37b)
-* User Sign-up:  ![riverSignup](https://github.com/user-attachments/assets/a9f22435-429f-40b5-ae2b-03687e3f7a3c)
-* Lobby Menu:  ![riverLobbyMenu](https://github.com/user-attachments/assets/c591b29b-f286-4b9c-aa2e-635ede819282)
-* Create Lobby Menu:  ![riverCreateLobby](https://github.com/user-attachments/assets/411ea78e-972f-43ed-b60e-ef38d8980331)
-* Join Lobby Menu:  ![RiverLobbyJoin](https://github.com/user-attachments/assets/98a47d8a-c146-4c6c-8d4b-3879661c4f1d)
+* User Login:  ![riverLogin](https://github.com/user-attachments/assets/47e116b6-6e8e-44aa-a149-7d484818a7d8)
+* User Sign-up:  ![riverSignup](https://github.com/user-attachments/assets/605c58ae-0b12-4a2f-bc70-d49a15cba082)
+* Lobby Menu:  ![riverLobbyMenu](https://github.com/user-attachments/assets/31c3751f-9b2c-4e42-a797-723bf28fe675)
+* Create Lobby Menu:  ![riverCreateLobby](https://github.com/user-attachments/assets/76ef56ca-ec35-4a73-bc7b-182436aa1806)
+* Join Lobby Menu:  ![RiverLobbyJoin](https://github.com/user-attachments/assets/9ce1ab7e-9dd1-4661-82bf-068caee7c7be)
+
+
 
